@@ -1,0 +1,17 @@
+name: distress_prediction
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyter
+  - pip
+  - pip:
+    - xgboost
+    - lightgbm
+    - imbalanced-learn
