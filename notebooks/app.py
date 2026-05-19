@@ -90,3 +90,29 @@ with col2:
         else:
             st.success("✅ AN TOÀN: Doanh nghiệp có sức khỏe tài chính ổn định, nguy cơ phá sản thấp.")
             st.write("**Khuyến nghị từ hệ thống:** Tiếp tục duy trì chính sách quản lý tài chính hiện tại và tối ưu hóa hiệu suất sử dụng tài sản.")
+            # -------------------------------------------------------------------------
+# 5. HIỂN THỊ CÁC BIỂU ĐỒ PHÂN TÍCH (Tận dụng thành quả của Bạn 2 & Bạn 4)
+# -------------------------------------------------------------------------
+st.write("---")
+st.header("📊 BIỂU ĐỒ PHÂN TÍCH CHI TIẾT TỪ DỮ LIỆU")
+
+# Tạo 2 tab trên giao diện web để người xem bấm qua lại cho gọn
+tab1, tab2 = st.tabs(["📈 Phân tích Xu hướng (Bạn 2)", "🎯 Chỉ số Quan trọng nhất (Bạn 4)"])
+
+with tab1:
+    st.subheader("Phân tích phân phối và xu hướng các chỉ số tài chính")
+    # Đọc và hiển thị ảnh biểu đồ Boxplot của Bạn 2
+    # Vì file app.py nằm chung thư mục notebooks với ảnh nên chỉ cần gọi thẳng tên ảnh
+    try:
+        st.image("02_boxplots.png", caption="Biểu đồ hộp phân tích các chỉ số kế toán cốt lõi", use_container_width=True)
+        st.image("detail_ROA.png", caption="Phân tích chi tiết chỉ số ROA đối với các doanh nghiệp phá sản", use_container_width=True)
+    except:
+        st.info("Chưa tìm thấy file ảnh biểu đồ trong thư mục. Hãy đảm bảo các file ảnh .png nằm cùng thư mục với file app.py nhé!")
+
+with tab2:
+    st.subheader("Top các chỉ số kế toán tác động mạnh nhất đến nguy cơ phá sản")
+   
+    try:
+        st.image("detail_Vòng_quay_tài_sản.png", caption="Biểu đồ mức độ ảnh hưởng của các biến lên mô hình AI", use_container_width=True)
+    except:
+        st.info("Đang cập nhật biểu đồ chỉ số quan trọng ...")
