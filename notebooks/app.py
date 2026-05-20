@@ -65,32 +65,35 @@ with col1:
 with col2:
     st.header("📈 Kết quả phân tích từ AI")
     
-    if predict_btn:
-        # Tạo 1 hàng chứa giá trị trung bình (Mean) chuẩn của file sạch
-        input_row = X_clean.mean().to_frame().T
+if predict_btn:
+    # 1. Tạo một hàng dữ liệu trống có các cột giống bộ dữ liệu gốc
+    input_row = X_clean.mean().to_frame().T
+    
+    # 2. GÁN SỐ THEO VỊ TRÍ CỘT
+    input_row.iloc[0, 0] = roa
+    input_row.iloc[0, 1] = debt_ratio
+    input_row.iloc[0, 2] = cash_flow
         
-        # Đè số liệu nhập tay của người dùng vào đúng cột
-        input_row[col_roa] = roa
-        input_row[col_debt] = debt_ratio
-        input_row[col_cash] = cash_flow
+    # 3. Ép mô hình tính toán lại dựa trên số vừa nhập
+    input_scaled = scaler.transform(input_row)
+    prob = model.predict_proba(input_scaled)[0][1] * 100
+    
+    # 4. ĐƯA KẾT QUẢ VÀO ĐÚNG CỘT BÊN PHẢI (with col2)
+    # (Lưu ý: Nếu code phía trên của bạn đặt tên cột bên phải là col_right hoặc đặt tên khác, 
+    # thì bạn hãy đổi chữ 'col2' này thành đúng tên biến đó nhé!)
+    with col2:
+        st.write("---")
+        st.subheader("📊 Kết quả phân tích từ AI")
+        st.markdown(f"### **Xác suất xảy ra rủi ro phá sản: {prob:.2f}%**")
         
-        # Đưa qua bộ scaler để chuẩn hóa
-        input_scaled = scaler.transform(input_row)
-        
-        # Dự báo xác suất phá sản
-        prob = model.predict_proba(input_scaled)[0][1] * 100
-        
-        # Hiển thị kết quả trực quan
-        st.subheader(f"Xác suất xảy ra rủi ro phá sản: {prob:.2f}%")
-        st.progress(int(prob))
-        
-        if prob > 50:
-            st.error("🚨 CẢNH BÁO: Doanh nghiệp này đang nằm trong vùng nguy hiểm cao! Nguy cơ kiệt quệ tài chính lớn.")
-            st.write("**Khuyến nghị từ hệ thống:** Ban quản trị cần lập tức cơ cấu lại các khoản nợ, cắt giảm chi phí vận hành và tối ưu hóa dòng tiền mặt để tránh mất thanh khoản.")
-        else:
+        # THAY ĐỔI NGƯỠNG: Vì nền dữ liệu rất thấp, chỉ cần rủi ro > 0.1% 
+        # (tức là tăng gấp 5 lần bình thường) là đã phải báo động !
+        if prob < 0.10:
             st.success("✅ AN TOÀN: Doanh nghiệp có sức khỏe tài chính ổn định, nguy cơ phá sản thấp.")
-            st.write("**Khuyến nghị từ hệ thống:** Tiếp tục duy trì chính sách quản lý tài chính hiện tại và tối ưu hóa hiệu suất sử dụng tài sản.")
-            # -------------------------------------------------------------------------
+            st.info("💡 **Khuyến nghị:** Tiếp tục duy trì chính sách quản lý tài chính hiện tại.")
+        else:
+            st.error("🚨 CẢNH BÁO: Doanh nghiệp đang có dấu hiệu kiệt quệ tài chính, nguy cơ phá sản ở mức CAO so với bình thường!")
+            st.warning("💡 **Khuyến nghị:** Cần rà soát ngay các khoản nợ ngắn hạn và cơ cấu lại dòng tiền gấp.")
 # 5. HIỂN THỊ CÁC BIỂU ĐỒ PHÂN TÍCH (Tận dụng thành quả của Bạn 2 & Bạn 4)
 # -------------------------------------------------------------------------
 st.write("---")
