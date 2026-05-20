@@ -44,23 +44,17 @@ with col1:
     st.header("📥 Nhập chỉ số kế toán")
     st.write("Nhập số liệu hiện tại của doanh nghiệp cần kiểm tra:")
     
-    # Lấy giá trị Min, Max, Mean trực tiếp từ file sạch
-    roa = st.number_input("1. Chỉ số ROA (C):", 
-                          min_value=float(X_clean[col_roa].min()), 
-                          max_value=float(X_clean[col_roa].max()), 
-                          value=float(X_clean[col_roa].mean()), step=0.01)
+    # Lấy giá trị Mean trực tiếp từ file sạch làm mặc định ban đầu
+roa = st.number_input("1. Chỉ số ROA (C):", 
+                      value=float(X_clean[col_roa].mean()), step=0.01)
+
+debt_ratio = st.number_input("2. Tỷ lệ nợ (Debt Ratio %):", 
+                             value=float(X_clean[col_debt].mean()), step=0.01)
+
+cash_flow = st.number_input("3. Tỷ suất dòng tiền (Cash Flow Rate):", 
+                            value=float(X_clean[col_cash].mean()), step=0.01)
     
-    debt_ratio = st.number_input("2. Tỷ lệ nợ (Debt Ratio %):", 
-                                 min_value=float(X_clean[col_debt].min()), 
-                                 max_value=float(X_clean[col_debt].max()), 
-                                 value=float(X_clean[col_debt].mean()), step=0.01)
-    
-    cash_flow = st.number_input("3. Tỷ suất dòng tiền (Cash Flow Rate):", 
-                                min_value=float(X_clean[col_cash].min()), 
-                                max_value=float(X_clean[col_cash].max()), 
-                                value=float(X_clean[col_cash].mean()), step=0.01)
-    
-    predict_btn = st.button("Chạy dự báo nguy cơ", type="primary")
+predict_btn = st.button("Chạy dự báo nguy cơ", type="primary")
 
 with col2:
     st.header("📈 Kết quả phân tích từ AI")
